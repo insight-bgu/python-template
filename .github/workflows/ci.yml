@@ -1,0 +1,34 @@
+name: Python CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: "Choose the Python version to use"
+        required: true
+        type: choice
+        options: 
+          - 3.7
+          - 3.8
+          - 3.9
+          - 3.10
+          - 3.11
+          - 3.12
+
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    uses: insight-bgu/insight-pipelines/.github/workflows/python-lint.yml@main
+    with:
+      python-version: ${{ github.event.inputs.python-version }}
+
+  format:
+    uses: insight-bgu/insight-pipelines/.github/workflows/python-format.yml@main
+    with:
+      python-version: ${{ github.event.inputs.python-version }}
